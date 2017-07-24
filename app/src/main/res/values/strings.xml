@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">QuizApp</string>
+    <string name="question_one">How tall is pałac kultury?</string>
+    <string name="answer_one">110</string>
+    <string name="answer_two">170</string>
+    <string name="answer_three">220</string>
+    <string name="answer_four">188</string>
 </resources>
