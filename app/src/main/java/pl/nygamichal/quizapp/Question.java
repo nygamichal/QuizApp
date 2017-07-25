@@ -13,6 +13,9 @@ public class Question {
     public String text;
     public ArrayList<Answer> answers = new ArrayList<>();
 
+    public Question(String string) {
+    }
+
     public Question() {
     }
 
