@@ -82,15 +82,24 @@ public class MainActivity extends AppCompatActivity {
 
     //w momencie naciśnięcia przycisku NEXT sprawdzamy czy wybór usera był poprawny
     @OnClick(R.id.buttonNext) public void onClickNext() {
-        if (quiz.questions.get(quiz.answersSoFar).answers.get(getSelectedIndex()).isCorrect)
+        if(getSelectedIndex()>=0)//sprawdzamy czy user wybral jakas odpowiedz
         {
-            Toast.makeText(this,"IS CORRECT",Toast.LENGTH_SHORT).show();
-            quiz.correctAnswers++;
+            if (quiz.questions.get(quiz.answersSoFar).answers.get(getSelectedIndex()).isCorrect)
+            {
+                Toast.makeText(this,"IS CORRECT",Toast.LENGTH_SHORT).show();
+                quiz.correctAnswers++;
+            }
+            else
+            {
+                Toast.makeText(this,"IS NOT CORRECT",Toast.LENGTH_SHORT).show();
+            }
         }
         else
         {
-            Toast.makeText(this,"IS NOT CORRECT",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Select one!",Toast.LENGTH_LONG).show();
+            return;
         }
+
 
         Intent intent;
         if (quiz.answersSoFar>=1)
@@ -104,5 +113,6 @@ public class MainActivity extends AppCompatActivity {
         quiz.answersSoFar++;
         intent.putExtra("quiz", Parcels.wrap(quiz));
         startActivity(intent);
+        this.finish();//aby user nie mógł cofnąć do poprzedniego pytania
     }
 }
