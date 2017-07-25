@@ -1,5 +1,6 @@
 package pl.nygamichal.quizapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.parceler.Parcels;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -15,31 +18,49 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
 
     //wprowadzenie ButterKnife
-    //@BindView(R.id.RadioGroup) RadioGroup radioGroup;
     @BindView(R.id.textViewQuestion) TextView textViewQuestion;
     @BindView(R.id.RadioGroup) RadioGroup radioGroup;
-    Quiz quiz;//obiekt w klasie a nie lokalnie
-    Question question;
+    Quiz quiz;//obiekt w klasie, a nie lokalnie
+    //Question question;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        if (getIntent().hasExtra("quiz"))
+        {
+            //odczytane jedynie z intentu
+            quiz = Parcels.unwrap(getIntent().getParcelableExtra("quiz"));
+        }
+        else
+        {
+            //inicjalizacja i tworzenie od zera
+            initQuiz();
+        }
+
+        setQuestion(quiz.questions.get(quiz.answersSoFar));
+        //setQuestion(question);
+    }
+
+    private void initQuiz() {
         quiz = new Quiz();
         Question question = new Question(getString(R.string.question_one));
         question.answers.add(new Answer(getString(R.string.answer_one),false));
         question.answers.add(new Answer(getString(R.string.answer_two),false));
         question.answers.add(new Answer(getString(R.string.answer_three),false));
         question.answers.add(new Answer(getString(R.string.answer_four),true));
-
         quiz.questions.add(question);
 
-
-        setQuestion(question);
+        question = new Question(getString(R.string.question_two));
+        question.answers.add(new Answer(getString(R.string.answer_oneone),true));
+        question.answers.add(new Answer(getString(R.string.answer_onetwo),false));
+        question.answers.add(new Answer(getString(R.string.answer_onethree),false));
+        question.answers.add(new Answer(getString(R.string.answer_onefour),false));
+        quiz.questions.add(question);
     }
 
-    private void setQuestion(Question questionLocal) {
-        question = questionLocal;
+    private void setQuestion(Question question) {
+        //question = questionLocal; //dilitujesz, bo localnie pytania wybeirasz, a zmieniemay na dynamiczne
         textViewQuestion.setText(question.text);
         //chodzimy po elemenatach tablicy answers elementami answer
         for (Answer answer:question.answers)
@@ -61,13 +82,27 @@ public class MainActivity extends AppCompatActivity {
 
     //w momencie naciśnięcia przycisku NEXT sprawdzamy czy wybór usera był poprawny
     @OnClick(R.id.buttonNext) public void onClickNext() {
-        if (question.answers.get(getSelectedIndex()).isCorrect)
+        if (quiz.questions.get(quiz.answersSoFar).answers.get(getSelectedIndex()).isCorrect)
         {
             Toast.makeText(this,"IS CORRECT",Toast.LENGTH_SHORT).show();
+            quiz.correctAnswers++;
         }
         else
         {
             Toast.makeText(this,"IS NOT CORRECT",Toast.LENGTH_SHORT).show();
         }
+
+        Intent intent;
+        if (quiz.answersSoFar>=1)
+        {
+          intent = new Intent(this, HighScoreActivity.class);
+        }
+        else
+        {
+            intent = new Intent(this, MainActivity.class);
+        }
+        quiz.answersSoFar++;
+        intent.putExtra("quiz", Parcels.wrap(quiz));
+        startActivity(intent);
     }
 }

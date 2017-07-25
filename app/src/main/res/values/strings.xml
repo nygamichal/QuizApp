@@ -5,4 +5,10 @@
     <string name="answer_two">170</string>
     <string name="answer_three">220</string>
     <string name="answer_four">188</string>
+
+    <string name="question_two">What color is background?</string>
+    <string name="answer_oneone">White</string>
+    <string name="answer_onetwo">Black</string>
+    <string name="answer_onethree">Blue</string>
+    <string name="answer_onefour">Gray</string>
 </resources>

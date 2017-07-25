@@ -13,15 +13,16 @@ public class Question {
     public String text;
     public ArrayList<Answer> answers = new ArrayList<>();
 
-    public Question(String string) {
-    }
-
     public Question() {
     }
 
-    public Question(ArrayList<Answer> answers) {
-        this.answers = answers;
+
+    public Question(String text) {
+        this.text = text;
     }
+    //public Question(ArrayList<Answer> answers) {
+     //   this.answers = answers;
+    //}
 
 
 }

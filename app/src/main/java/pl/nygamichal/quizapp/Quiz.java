@@ -11,5 +11,6 @@ import java.util.ArrayList;
 public class Quiz {
     public ArrayList<Question> questions = new ArrayList<>();
     public int allQuestions;
+    public int answersSoFar = 0;
     public int correctAnswers;
 }
